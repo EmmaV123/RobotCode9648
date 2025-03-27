@@ -1,7 +1,7 @@
 # RobotCode9648
 The tank drive robot code I made for FIRST Robotics team 9648
 
-"Do I have to know how to code?" Nope! Although it does help a lot. Go to the wiki tab up at the top of the page and I'll do my best to teach you!
+"Do I have to know how to code?" A little bit. This tutorial course from W3Schools is quite helpful: https://www.w3schools.com/java/
 
 Please remember that FIRST could change anything and everything about their libraries and installation processes! There's a possibility this code stops working for whatever reason and you will have to fix it.
 
@@ -14,4 +14,4 @@ Please remember that FIRST could change anything and everything about their libr
 6. Navigate to the Robot.java file you downloaded from this github page and select all of the code, then copy it and paste into the project's now empty Robot.java
 7. Hope that it works
 
-  HOW TO RUN (WPILib WAY): read this https://docs.wpilib.org/en/stable/docs/software/vscode-overview/importing-last-years-robot-code.html
+ HOW TO RUN (WPILib WAY): read this https://docs.wpilib.org/en/stable/docs/software/vscode-overview/importing-last-years-robot-code.html
