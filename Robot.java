@@ -4,20 +4,18 @@
 
 //imports for basic robot stuff and smartdashboard
 package frc.robot;
+//camera server stuff
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 //imports for motor controllers, timer, xbox controller, autonomous
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.util.sendable.SendableRegistry;
-
-//camera server stuff
-import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -41,7 +39,12 @@ public class Robot extends TimedRobot {
   //motor controller for launcher
   private final PWMSparkMax launchWheel = new PWMSparkMax(5);
 
+  //motor controller for forklift (ADD THE CORRECT CHANNEL)
+  private final PWMSparkMax forkLift = new PWMSparkMax(6);
+
   private final Timer timer1 = new Timer();
+  private final Timer timer2 = new Timer();
+
 
   public Robot() {
     SendableRegistry.addChild(m_robotDrive, m_leftDrive);
@@ -54,6 +57,7 @@ public class Robot extends TimedRobot {
   //some variables for teleop
   double launchPower = 0;
   double drivePower = 1;
+  double forkPower = 0;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -100,9 +104,9 @@ public class Robot extends TimedRobot {
 
   // DriveShoot goes forward at half speed for 5 seconds, then launches pipe
     if (m_autoSelected == kDriveShoot){
-      if (timer1.get() < 5.0){
+      if (timer1.get() < 6.0){
           m_robotDrive.arcadeDrive(.5, 0);
-        } else if (timer1.get() < 7.0){
+        } else if (timer1.get() < 8.0){
           m_robotDrive.arcadeDrive(0,0);
           launchWheel.set(-0.3);
         } else {
@@ -144,6 +148,16 @@ public class Robot extends TimedRobot {
         //launchPower = 1;
         //launchWheel.set(launchPower);
     }
+    //for forklift (CHANGE BUTTON IF NECESSARY)
+    //may also need different timing
+    if (driverController.getXButton() == true){
+      timer2.reset();
+      forkPower = -.18;
+    }
+    if (driverController.getYButton() == true){
+      timer2.reset();
+      forkPower = .15;
+    }
     if (driverController.getLeftBumperButton() == true){
       drivePower = 0.6;
     } else {
@@ -154,7 +168,12 @@ public class Robot extends TimedRobot {
       launchPower = 0;
       timer1.reset();
     }
+    if (timer2.get() > 1.5){
+      forkPower = 0;
+      timer2.reset();
+    }
     launchWheel.set(launchPower);
+    forkLift.set(forkPower);
   }
 
   /** This function is called once when the robot is disabled. */
